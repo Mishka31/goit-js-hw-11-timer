@@ -10,46 +10,46 @@ refs.body.style = "background: coral";
 refs.timerEl.style =
   "background: red;display: flex;justify-content: center;margin-top: 80px;font-size: 50px";
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class CountdownTimer {
-  constructor({ targetDate, onTick }) {
+  constructor({ targetDate, selector }) {
+    this.bodyEl = document.querySelector(selector);
     this.targetDate = targetDate;
-    this.onTick = onTick;
   }
   start() {
     setInterval(() => {
       const timeNow = Date.now();
       const timeDifferent = this.targetDate - timeNow;
-      const time = getTimeElements(timeDifferent);
-      this.onTick(time);
+      const time = this.getTimeElements(timeDifferent);
+      this.updateReTime(time);
     }, 1000);
   }
-}
-const reTimer = new CountdownTimer({
-  onTick: updateReTime,
-});
+  pad(value) {
+    return String(value).padStart(2, "0");
+  }
+  getTimeElements(time) {
+    const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    );
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+    return { days, hours, mins, secs };
+  }
 
-reTimer.start();
-
-function updateReTime({ days, hours, mins, secs }) {
-  refs.daysEl.textContent = `${days}`;
-  refs.hoursEl.textContent = `${hours}`;
-  refs.minsEl.textContent = `${mins}`;
-  refs.secsEl.textContent = `${secs}`;
+  updateReTime({ days, hours, mins, secs }) {
+    refs.daysEl.textContent = `${days}`;
+    refs.hoursEl.textContent = `${hours}`;
+    refs.minsEl.textContent = `${mins}`;
+    refs.secsEl.textContent = `${secs}`;
+  }
 }
 
-function pad(value) {
-  return String(value).padStart(2, "0");
-}
-function getTimeElements(time) {
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(
-    Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-  );
-  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-  return { days, hours, mins, secs };
-}
+// reTimer.start();
+
 const example = new CountdownTimer({
-  //   selector: "#timer-1",
+  selector: "#timer-1",
   targetDate: new Date("Jul 17, 2021"),
 });
+example.start();
