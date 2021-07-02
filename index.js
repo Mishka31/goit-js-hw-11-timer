@@ -1,11 +1,3 @@
-const refs = {
-  body: document.querySelector("body"),
-  timerEl: document.querySelector(".timer"),
-};
-refs.body.style = "background: coral";
-refs.timerEl.style = "background: red;display: flex;justify-content: center;margin-top: 80px;font-size: 50px";
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 class CountdownTimer {
   constructor({ targetDate, selector }) {
     this.selector = selector;
@@ -14,7 +6,9 @@ class CountdownTimer {
     this.valueHours = document.querySelector(`${selector} [data-value="hours"]`);
     this.valueMins = document.querySelector(`${selector} [data-value="mins"]`);
     this.valueSecs = document.querySelector(`${selector} [data-value="secs"]`);
+    this.start();
   }
+
   start() {
     setInterval(() => {
       const timeNow = Date.now();
@@ -44,4 +38,3 @@ const example = new CountdownTimer({
   selector: "#timer-1",
   targetDate: new Date("dec 30, 2021"),
 });
-example.start();
